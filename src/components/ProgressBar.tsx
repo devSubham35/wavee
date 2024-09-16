@@ -30,7 +30,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   return (
     <div>
       {currentTrack && (
-        <div className='w-full h-[15%] p-4 flex items-center gap-6 justify-between bg-gradient-to-r from-slate-950 to-violet-950 rounded-full px-8'>
+        <div className='w-full h-[15%] p-4 flex items-center gap-6 justify-between bg-gradient-to-r from-slate-950 to-violet-950 rounded-full'>
           <div className="flex items-center gap-4 flex-shrink-0">
             <div className='w-[60px] h-[60px] rounded-full overflow-hidden'>
               <Image src={currentTrack.image ?? DefaultImage} alt={"image_00"} width={500} height={500} className="w-full h-full spin duration-1000" />
@@ -55,7 +55,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
               <div className="bg-violet-600 h-2.5 rounded-full cursor-pointer" style={{ width: `${(currentTime / (audioRef.current?.duration || 1)) * 100}%` }}></div>
             </div>
           </div>
-          <p className="text-gray-300 text-sm">{formatTime(currentTime)} / {formatTime(audioRef.current?.duration || 0)}</p>
+          <p className="text-gray-300 text-sm pr-8">{formatTime(currentTime)} / {formatTime(audioRef.current?.duration || 0)}</p>
         </div>
       )}
     </div>
