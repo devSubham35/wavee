@@ -1,31 +1,65 @@
-/// MainIndexPage Props
+// MainIndexPage Props
 import { ReactNode } from 'react';
+
 export interface MainIndexPageProps {
     children: ReactNode;
 }
 
-/// LandingPage component props Interface
+// LandingPage component props Interface
 export interface LandingPageProps {
     onGetStarted?: () => void;
 }
 
-/// LandingPage component props Interface
+// Navbar component props Interface
 export interface NavbarProps {
     handleToggle?: () => void;
     onUpload?: () => void;
     isGrid?: boolean;
-    // setIsGrid: (isGrid: boolean) => void;
 }
 
-/// Upload Form props Interface
+// Upload Form props Interface
 export interface UploadFormProps {
     onDataUpload: (formData: FormData) => void;
-    setShowModal: (value: boolean) => void;
+    setShowModal: (show: boolean) => void;
 }
 
-/// Form data Inter face
+// Form data Interface
 export interface FormData {
-    title: string;
-    music: File | null;
-    image: File | null;
+    title?: string;  // Title is optional
+    music?: File | null;  // Music file is optional and can be null
+    image?: File | null;  // Image file is optional and can be null
+}
+
+// Music Track
+export interface MusicTrack {
+    name?: string;
+    duration?: string;
+    image?: string;
+    music?: string;
+}
+
+// Progress bar
+export interface Track {
+    name?: string;
+    image?: string;
+}
+
+// Modal
+export interface ModalProps {
+    children?: ReactNode;
+    showModal?: boolean;
+    setShowModal?: (show: boolean) => void;  // Optional if not used
+}
+
+// Music Card
+export interface MusicCardProps {
+    musicData?: MusicTrack;  // Use MusicTrack here for consistency
+    isPlaying?: boolean;
+    isGrid?: boolean;
+    onPlay?: () => void;
+}
+
+// Audio Ref
+export interface AudioRef {
+    current: HTMLAudioElement;
 }

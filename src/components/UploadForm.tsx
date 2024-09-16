@@ -88,7 +88,9 @@ const UploadForm: React.FC<UploadFormProps> = ({ onDataUpload, setShowModal }) =
     }
 
     setErrorMessage(null); // Clear the error message if the title is valid
-    onDataUpload(formData);
+    if(formData){
+      onDataUpload(formData);
+    }
   };
 
   return (

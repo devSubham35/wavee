@@ -1,21 +1,23 @@
-'use client'
+'use client';
+
 import React, { useState, useRef, useEffect } from 'react';
 import Modal from './Modal';
 import Navbar from './Navbar';
 import MusicCard from './MusicCard';
-import PogressBar from './PogressBar';
 import UploadForm from './UploadForm';
 import DefaultImage from "../images/DefaultImage.jpg";
+import ProgressBar from './ProgressBar';
+import { MusicTrack, FormData } from '../utils/types'; // Import types
 
-const DashboardPage = () => {
+const DashboardPage: React.FC = () => {
   
-  const [isGrid, setIsGrid] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [musicData, setMusicData]: any = useState([]);
-  const [currentTrack, setCurrentTrack]: any = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const audioRef: any = useRef(new Audio());
+  const [isGrid, setIsGrid] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [musicData, setMusicData] = useState<MusicTrack[]>([]);
+  const [currentTrack, setCurrentTrack] = useState<MusicTrack | null>(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const audioRef = useRef<HTMLAudioElement>(new Audio());
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -31,7 +33,7 @@ const DashboardPage = () => {
   useEffect(() => {
     const audio = audioRef.current;
     if (currentTrack) {
-      audio.src = currentTrack.music;
+      audio.src = currentTrack.music || '';
       if (isPlaying) {
         audio.play();
       } else {
@@ -42,19 +44,18 @@ const DashboardPage = () => {
 
   const handleToggle = () => setIsGrid(!isGrid);
 
-  const handleUploadForm = (formData: any) => {
-    console.log(formData, "++66")
-    const newSong = {
-      name: formData?.title,
+  const handleUploadForm = (formData: FormData) => {
+    const newSong: MusicTrack = {
+      name: formData.title || 'Unknown',
       duration: "0:00",
-      image: formData?.image ? URL.createObjectURL(formData.image) : DefaultImage,
-      music: URL.createObjectURL(formData.music)
+      image: formData.image ? URL.createObjectURL(formData.image) : DefaultImage as unknown as string,
+      music: formData.music ? URL.createObjectURL(formData.music) : ''
     };
-    setMusicData((prevData: any) => [...prevData, newSong]);
+    setMusicData((prevData) => [...prevData, newSong]);
     setShowModal(false);
   };
 
-  const handlePlay = (track: any) => {
+  const handlePlay = (track: MusicTrack) => {
     setCurrentTrack(track);
     setIsPlaying(true);
   };
@@ -66,7 +67,7 @@ const DashboardPage = () => {
   const handleNext = () => {
     if (musicData.length === 0) return;
 
-    const currentIndex = musicData.findIndex((track: any) => track === currentTrack);
+    const currentIndex = musicData.findIndex((track) => track === currentTrack);
     if (musicData.length === 1) {
       // Single song, loop it
       audioRef.current.currentTime = 0;
@@ -82,7 +83,7 @@ const DashboardPage = () => {
   const handlePrevious = () => {
     if (musicData.length === 0) return;
 
-    const currentIndex = musicData.findIndex((track: any) => track === currentTrack);
+    const currentIndex = musicData.findIndex((track) => track === currentTrack);
     const prevTrack = musicData[(currentIndex - 1 + musicData.length) % musicData.length];
     setCurrentTrack(prevTrack);
     setIsPlaying(true);
@@ -104,8 +105,8 @@ const DashboardPage = () => {
         <div className={`w-full h-[85%] gap-4 xl:gap-6 overflow-y-scroll hide-scroll 
           ${musicData.length > 0 && isGrid ? "grid grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5" : "flex flex-col"}`}>
           {
-            musicData.length > 0 ?
-              musicData.map((item: any, index: number) => (
+            musicData.length > 0 ? 
+              musicData.map((item, index: number) => (
                 <MusicCard
                   key={index}
                   musicData={item}
@@ -122,7 +123,7 @@ const DashboardPage = () => {
         {/* Progress Bar */}
         <div className='w-full h-[15%]'>
           {currentTrack && (
-            <PogressBar
+            <ProgressBar
               currentTrack={currentTrack}
               currentTime={currentTime}
               audioRef={audioRef}
